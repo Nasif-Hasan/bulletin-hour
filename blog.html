@@ -40,9 +40,35 @@
             </div>
         </section>
     </header>
-    
-    <main>
-        <h1 class="text-5xl text-center text-teal-500">Top Blogs</h1>
+
+    <main class="container mx-auto">
+        <h1 class="text-5xl text-center text-teal-500 my-5">Top Blogs</h1>
+
+        <section class="grid lg:grid-cols-2 ">
+            <div class="m-5 p-4 shadow-2xl">
+                <h1 class="text-5xl p-4">The Difference Between Regular Functions and Arrow Functions</h1>
+                <p class="pb-4">Regular functions created using function declarations or expressions are constructible and callable.
+                    Since regular functions are constructible, they can be called using the new keyword. However, the
+                    arrow functions are only callable and not constructible, i.e arrow functions can never be used as
+                    constructor functions.</p>
+                    <button class="btn btn-accent">Read More</button>
+            </div>
+
+            <div class="m-5 p-4 shadow-2xl">
+                <h1 class="text-5xl p-4">Difference between var, let and const keywords in JavaScript</h1>
+                <p class="pb-4">Variables declared with var and const are scoped to the immediate function body.
+                    Variables declared with the var keyword are hoisted. Hoisting means that the variable can be
+                    accessed in their enclosing scope even before they are declared.</p>
+                    <button class="btn btn-accent">Read More</button>
+            </div>
+
+            <div class="m-5 p-4 shadow-2xl">
+                <h1 class="text-5xl p-4">What is the difference between forEach map filter and reduce?</h1>
+                <p class="pb-4">The main difference between forEach and filter is that forEach just loop over the array and executes the callback but filter executes the callback and check its return value. If the value is true element remains in the resulting array but if the return value is false the element will be removed for the resulting array.</p>
+                <button class="btn btn-accent">Read More</button>
+            </div>
+        </section>
 
     </main>
 </body>
+</html>
