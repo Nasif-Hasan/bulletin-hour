@@ -14,58 +14,63 @@ const catagoriMenu = async () => {
 
     const catagoryMenu = document.getElementById('catagory-menu')
 
-    for (const news of newsData) {
-        // console.log(news.category_name);
-        const li = document.createElement('li');
-        li.innerHTML = `
+    try {
+        for (const news of newsData) {
+            // console.log(news.category_name);
+            const li = document.createElement('li');
+            li.innerHTML = `
         <a onclick="someNews('${news.category_id}')" class="px-8 text-lg">${news.category_name}</a>
         `
-        catagoryMenu.appendChild(li);
+            catagoryMenu.appendChild(li);
+        }
+
+    }
+    catch (e) {
+        console.log('catagory names not found');
     }
     // console.log(data.data.news_category)
 }
 
-const someNews =  (category_id) => {
+const someNews = (category_id) => {
     // Start Loader
     const spinner = document.getElementById('spinner')
     spinner.classList.remove('hidden')
 
     const url = `https://openapi.programming-hero.com/api/news/category/${category_id}`;
     fetch(url)
-    .then(res =>res.json())
-    .then(data => diaplayNews(data.data))
-    
+        .then(res => res.json())
+        .then(data => diaplayNews(data.data))
+
 }
 
 const diaplayNews = (newsCard) => {
-    
+
     // const newsDisplay = await newsCard
     console.log(newsCard);
     const showNews = document.getElementById('show-news')
     const notFound = document.getElementById('not-found')
     showNews.textContent = '';
-    notFound.textContent = ''; 
-    
+    notFound.textContent = '';
+
     // Stop Loader
     spinner.classList.add('hidden')
 
-    if(newsCard.length === 0) {
+    if (newsCard.length === 0) {
         // console.log('Not Found');
         notFound.innerHTML = `
         <h2 class="text-4xl text-teal-500 text-center">Not Found Any News</h2>
         `
         return
     }
-    
+
     // Sort The Top News
-    let sort = newsCard.sort((a, b) => 
-    b.total_view - a.total_view);
+    let sort = newsCard.sort((a, b) =>
+        b.total_view - a.total_view);
 
     const cardNumber = document.getElementById('card-number')
         cardNumber.value = `
         ${sort.length} News Found On This Catagory
         `
-    
 
     sort.forEach(cardNews => {
         // console.log(cardNews);
@@ -76,8 +81,8 @@ const diaplayNews = (newsCard) => {
              <img src="${cardNews.thumbnail_url}" alt="Shoes" class="rounded-xl" />
         </figure>
         <div class="card-body items-center text-center">
-            <h2 class="card-title">${cardNews.title}</h2>            
-            <p>${cardNews.details.slice(0, 120) + '...'}</p>
+            <h2 class="card-title text-white">${cardNews.title}</h2>            
+            <p class="text-white">${cardNews.details.slice(0, 120) + '...'}</p>
             <div class="card-actions">
             <img style="height: 50px; width: 50px;" src="${cardNews.author.img}" alt="Shoes" class="rounded-xl" />
             <p>${cardNews.author.name ? cardNews.author.name : 'Name not found'}</p>
@@ -88,18 +93,18 @@ const diaplayNews = (newsCard) => {
         `
         showNews.appendChild(newsDiv)
 
-        
-    })  
-    
+
+    })
+
 
 }
 
-const modalView = news_id =>{
+const modalView = news_id => {
     // console.log(newNews);
     const url = `https://openapi.programming-hero.com/api/news/${news_id}`
     fetch(url)
-    .then(res => res.json())
-    .then(data => topNews(data.data[0]))
+        .then(res => res.json())
+        .then(data => topNews(data.data[0]))
 }
 
 const topNews = hotNews => {
