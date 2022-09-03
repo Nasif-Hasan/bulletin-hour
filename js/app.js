@@ -5,6 +5,7 @@ const loadAllNews = async () => {
     return data;
 }
 
+// Category Section
 const catagoriMenu = async () => {
     const data = await loadAllNews();
     const newsData = data.data.news_category
@@ -27,7 +28,7 @@ const catagoriMenu = async () => {
 }
 
 const someNews = (category_id) => {
-    // Start Loader
+    // Start Loader or Spinner
     const spinner = document.getElementById('spinner')
     spinner.classList.remove('hidden')
 
@@ -37,13 +38,14 @@ const someNews = (category_id) => {
         .then(data => diaplayNews(data.data))
 }
 
+// News Card section
 const diaplayNews = (newsCard) => {
     const showNews = document.getElementById('show-news')
     const notFound = document.getElementById('not-found')
     showNews.textContent = '';
     notFound.textContent = '';
 
-    // Stop Loader
+    // Stop Loader or Spinner
     spinner.classList.add('hidden')
 
     if (newsCard.length === 0) {
@@ -58,7 +60,7 @@ const diaplayNews = (newsCard) => {
         b.total_view - a.total_view);
 
     const cardNumber = document.getElementById('card-number')
-        cardNumber.value = `
+    cardNumber.value = `
         ${sort.length} News Found On This Catagory
         `
 
@@ -83,6 +85,7 @@ const diaplayNews = (newsCard) => {
     })
 }
 
+// Modal Section
 const modalView = news_id => {
     const url = `https://openapi.programming-hero.com/api/news/${news_id}`
     fetch(url)
