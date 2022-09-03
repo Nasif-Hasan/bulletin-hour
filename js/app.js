@@ -43,18 +43,33 @@ const diaplayNews = (newsCard) => {
     console.log(newsCard);
     const showNews = document.getElementById('show-news')
     const notFound = document.getElementById('not-found')
-    // newsDiv.textContent = '';
-    notFound.textContent = '';
+    showNews.textContent = '';
+    notFound.textContent = ''; 
+    
+    // Stop Loader
+    spinner.classList.add('hidden')
 
     if(newsCard.length === 0) {
         // console.log('Not Found');
         notFound.innerHTML = `
-        <h2 class="text-4xl text-teal-500 text-center">Not Found</h2>
+        <h2 class="text-4xl text-teal-500 text-center">Not Found Any News</h2>
         `
         return
     }
-    newsCard.forEach(cardNews => {
+    
+    // Sort The Top News
+    let sort = newsCard.sort((a, b) => 
+    b.total_view - a.total_view);
+
+    const cardNumber = document.getElementById('card-number')
+        cardNumber.value = `
+        ${sort.length} News Found On This Catagory
+        `
+    
+
+    sort.forEach(cardNews => {
         // console.log(cardNews);
+
         const newsDiv = document.createElement('div')
         newsDiv.innerHTML = `
         <figure class="p-5">
@@ -72,11 +87,10 @@ const diaplayNews = (newsCard) => {
         </div>
         `
         showNews.appendChild(newsDiv)
+
+        
     })  
     
-    // Stop Loader
-    spinner.classList.add('hidden')
-
 
 }
 
@@ -95,9 +109,11 @@ const topNews = hotNews => {
     modalNews.innerHTML = `
     <div class="modal-box relative">
         <label for="my-modal-3" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+        <div class="flex">
         <img src="${hotNews.thumbnail_url}" alt="Shoes" class="rounded-xl"/>
-        <h3 class="text-lg font-bold">${hotNews.title}</h3>
-        <p class="py-4">${hotNews.details.slice(0, 250) + '...'}</p>
+        <h3 class="text-2xl font-bold p-4">${hotNews.title}</h3>
+        </div>
+        <p class="py-4">${hotNews.details.slice(0, 350) + '...'}</p>
     </div>
     `
 }
