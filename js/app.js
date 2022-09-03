@@ -25,36 +25,62 @@ const catagoriMenu = async () => {
     // console.log(data.data.news_category)
 }
 
-const someNews = async (category_id) => {
+const someNews =  (category_id) => {
     const url = `https://openapi.programming-hero.com/api/news/category/${category_id}`;
-    const res = await fetch(url);
-    const data = res.json();
-    diaplayNews(data);
+    fetch(url)
+    .then(res =>res.json())
+    .then(data => diaplayNews(data.data))
+    
 }
 
-const diaplayNews = async (newsCard) => {
+const diaplayNews = (newsCard) => {
     
-    const newsDisplay = await newsCard
-    console.log(newsDisplay);
-
+    // const newsDisplay = await newsCard
+    console.log(newsCard);
     const showNews = document.getElementById('show-news')
     newsCard.forEach(cardNews => {
+        // console.log(cardNews);
         const newsDiv = document.createElement('div')
         newsDiv.innerHTML = `
         <figure class="p-5">
-            <img src="${cardNews.image_url}" alt="Shoes" class="rounded-xl" />
+             <img src="${cardNews.thumbnail_url}" alt="Shoes" class="rounded-xl" />
         </figure>
         <div class="card-body items-center text-center">
-            <h2 class="card-title">Shoes!</h2>
-            <p>If a dog chews shoes whose shoes does he choose?</p>
+            <h2 class="card-title">${cardNews.title}</h2>            
+            <p>${cardNews.details.slice(0, 120) + '...'}</p>
             <div class="card-actions">
-                <button class="btn btn-primary">Buy Now</button>
+            <img style="height: 50px; width: 50px;" src="${cardNews.author.img}" alt="Shoes" class="rounded-xl" />
+            <p>${cardNews.author.name ? cardNews.author.name : 'Name not found'}</p>
+            <p><i class="fa-solid fa-eye"></i> ${cardNews.total_view ? cardNews.total_view : 00}</p>
+                <label onclick="modalView('${cardNews._id}')" for="my-modal-3" class="btn btn-primary modal-button"><i class="fa-solid fa-arrow-right-long"></i></label>
             </div>
         </div>
         `
         showNews.appendChild(newsDiv)
-    })
+    })   
 
+}
+
+const modalView = news_id =>{
+    // console.log(newNews);
+    const url = `https://openapi.programming-hero.com/api/news/${news_id}`
+    fetch(url)
+    .then(res => res.json())
+    .then(data => topNews(data.data[0]))
+}
+
+const topNews = hotNews => {
+    // console.log(hotNews);
+    const modalNews = document.getElementById('modal-news')
+    modalNews.classList.add('modal')
+    modalNews.innerHTML = `
+    <div class="modal-box relative">
+        <label for="my-modal-3" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+        <h3 class="text-lg font-bold">Congratulations random Internet user!</h3>
+        <p class="py-4">You've been selected for a chance to get one year of subscription to use Wikipedia for
+            free!</p>
+    </div>
+    `
 }
 
 catagoriMenu()
