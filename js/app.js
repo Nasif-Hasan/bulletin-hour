@@ -27,7 +27,8 @@ const catagoriMenu = async () => {
 
 const someNews =  (category_id) => {
     // Start Loader
-    // <progress class="progress progress-accent w-56" value="10" max="100"></progress>
+    const spinner = document.getElementById('spinner')
+    spinner.classList.remove('hidden')
 
     const url = `https://openapi.programming-hero.com/api/news/category/${category_id}`;
     fetch(url)
@@ -41,10 +42,20 @@ const diaplayNews = (newsCard) => {
     // const newsDisplay = await newsCard
     console.log(newsCard);
     const showNews = document.getElementById('show-news')
+    const notFound = document.getElementById('not-found')
+    // newsDiv.textContent = '';
+    notFound.textContent = '';
+
+    if(newsCard.length === 0) {
+        // console.log('Not Found');
+        notFound.innerHTML = `
+        <h2 class="text-4xl text-teal-500 text-center">Not Found</h2>
+        `
+        return
+    }
     newsCard.forEach(cardNews => {
         // console.log(cardNews);
         const newsDiv = document.createElement('div')
-        newsDiv.innerText = ''
         newsDiv.innerHTML = `
         <figure class="p-5">
              <img src="${cardNews.thumbnail_url}" alt="Shoes" class="rounded-xl" />
@@ -64,6 +75,7 @@ const diaplayNews = (newsCard) => {
     })  
     
     // Stop Loader
+    spinner.classList.add('hidden')
 
 
 }
@@ -85,8 +97,7 @@ const topNews = hotNews => {
         <label for="my-modal-3" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
         <img src="${hotNews.thumbnail_url}" alt="Shoes" class="rounded-xl"/>
         <h3 class="text-lg font-bold">${hotNews.title}</h3>
-        <p class="py-4">You've been selected for a chance to get one year of subscription to use Wikipedia for
-            free!</p>
+        <p class="py-4">${hotNews.details.slice(0, 250) + '...'}</p>
     </div>
     `
 }
