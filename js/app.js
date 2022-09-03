@@ -26,6 +26,9 @@ const catagoriMenu = async () => {
 }
 
 const someNews =  (category_id) => {
+    // Start Loader
+    // <progress class="progress progress-accent w-56" value="10" max="100"></progress>
+
     const url = `https://openapi.programming-hero.com/api/news/category/${category_id}`;
     fetch(url)
     .then(res =>res.json())
@@ -41,6 +44,7 @@ const diaplayNews = (newsCard) => {
     newsCard.forEach(cardNews => {
         // console.log(cardNews);
         const newsDiv = document.createElement('div')
+        newsDiv.innerText = ''
         newsDiv.innerHTML = `
         <figure class="p-5">
              <img src="${cardNews.thumbnail_url}" alt="Shoes" class="rounded-xl" />
@@ -57,7 +61,10 @@ const diaplayNews = (newsCard) => {
         </div>
         `
         showNews.appendChild(newsDiv)
-    })   
+    })  
+    
+    // Stop Loader
+
 
 }
 
@@ -70,13 +77,14 @@ const modalView = news_id =>{
 }
 
 const topNews = hotNews => {
-    // console.log(hotNews);
+    console.log(hotNews);
     const modalNews = document.getElementById('modal-news')
-    modalNews.classList.add('modal')
+    // modalNews.classList.add('modal')
     modalNews.innerHTML = `
     <div class="modal-box relative">
         <label for="my-modal-3" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
-        <h3 class="text-lg font-bold">Congratulations random Internet user!</h3>
+        <img src="${hotNews.thumbnail_url}" alt="Shoes" class="rounded-xl"/>
+        <h3 class="text-lg font-bold">${hotNews.title}</h3>
         <p class="py-4">You've been selected for a chance to get one year of subscription to use Wikipedia for
             free!</p>
     </div>
