@@ -1,23 +1,29 @@
 const loadAllNews = async () => {
-    const url = `https://openapi.programming-hero.com/api/news/categories`;
-    const res = await fetch(url);
-    const data = res.json();
-    return data;
+    try {
+        const url = `https://openapi.programming-hero.com/api/news/categories`;
+        const res = await fetch(url);
+        const data = res.json();
+        return data;
+    }
+    catch (e) {
+        console.log('The main API is not connected');
+    }
+
 }
 
 // Category Section
 const catagoriMenu = async () => {
     const data = await loadAllNews();
-    const newsData = data.data.news_category
+    const newsData = data.data.news_category;
 
-    const catagoryMenu = document.getElementById('catagory-menu')
+    const catagoryMenu = document.getElementById('catagory-menu');
 
     try {
         for (const news of newsData) {
             const li = document.createElement('li');
             li.innerHTML = `
         <a onclick="someNews('${news.category_id}')" class="px-8 text-lg cursor-pointer">${news.category_name}</a>
-        `
+        `;
             catagoryMenu.appendChild(li);
         }
 
@@ -28,44 +34,51 @@ const catagoriMenu = async () => {
 }
 
 const someNews = (category_id) => {
-    // Start Loader or Spinner
-    const spinner = document.getElementById('spinner')
-    spinner.classList.remove('hidden')
 
-    const url = `https://openapi.programming-hero.com/api/news/category/${category_id}`;
-    fetch(url)
-        .then(res => res.json())
-        .then(data => diaplayNews(data.data))
+    // Start Loader or Spinner
+    const spinner = document.getElementById('spinner');
+    spinner.classList.remove('hidden');
+
+    try {
+        const url = `https://openapi.programming-hero.com/api/news/category/${category_id}`;
+        fetch(url)
+            .then(res => res.json())
+            .then(data => diaplayNews(data.data))
+    }
+    catch (e) {
+        console.log('Catagori Id not found');
+    }
+
 }
 
 // News Card section
 const diaplayNews = (newsCard) => {
-    const showNews = document.getElementById('show-news')
-    const notFound = document.getElementById('not-found')
+    const showNews = document.getElementById('show-news');
+    const notFound = document.getElementById('not-found');
     showNews.textContent = '';
     notFound.textContent = '';
 
     // Stop Loader or Spinner
-    spinner.classList.add('hidden')
+    spinner.classList.add('hidden');
 
     if (newsCard.length === 0) {
         notFound.innerHTML = `
         <h2 class="text-4xl text-teal-500 text-center">Not Found Any News</h2>
-        `
-        return
+        `;
+        return;
     }
 
     // Sort The Top News
     let sort = newsCard.sort((a, b) =>
         b.total_view - a.total_view);
 
-    const cardNumber = document.getElementById('card-number')
+    const cardNumber = document.getElementById('card-number');
     cardNumber.value = `
         ${sort.length} News Found On This Catagory
-        `
+        `;
 
     sort.forEach(cardNews => {
-        const newsDiv = document.createElement('div')
+        const newsDiv = document.createElement('div');
         newsDiv.innerHTML = `
         <figure class="p-5">
              <img src="${cardNews.thumbnail_url}" alt="Shoes" class="rounded-xl" />
@@ -80,21 +93,28 @@ const diaplayNews = (newsCard) => {
                 <label onclick="modalView('${cardNews._id}')" for="my-modal-3" class="btn btn-primary modal-button"><i class="fa-solid fa-arrow-right-long"></i></label>
             </div>
         </div>
-        `
-        showNews.appendChild(newsDiv)
+        `;
+        showNews.appendChild(newsDiv);
     })
+    
 }
 
 // Modal Section
 const modalView = news_id => {
-    const url = `https://openapi.programming-hero.com/api/news/${news_id}`
-    fetch(url)
-        .then(res => res.json())
-        .then(data => topNews(data.data[0]))
+    try {
+        const url = `https://openapi.programming-hero.com/api/news/${news_id}`
+        fetch(url)
+            .then(res => res.json())
+            .then(data => topNews(data.data[0]))
+    }
+    catch (e) {
+        console.log('Modal Not Found');
+    }
+
 }
 
 const topNews = hotNews => {
-    const modalNews = document.getElementById('modal-news')
+    const modalNews = document.getElementById('modal-news');
     modalNews.innerHTML = `
     <div class="modal-box relative">
         <label for="my-modal-3" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
@@ -104,7 +124,7 @@ const topNews = hotNews => {
         </div>
         <p class="py-4">${hotNews.details.slice(0, 350) + '...'}</p>
     </div>
-    `
+    `;
 }
 
-catagoriMenu()
+catagoriMenu();
