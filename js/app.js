@@ -3,23 +3,19 @@ const loadAllNews = async () => {
     const res = await fetch(url);
     const data = res.json();
     return data;
-    // console.log(data);
 }
 
 const catagoriMenu = async () => {
-    // console.log(loadAllNews());
     const data = await loadAllNews();
     const newsData = data.data.news_category
-    // console.log(newsData);
 
     const catagoryMenu = document.getElementById('catagory-menu')
 
     try {
         for (const news of newsData) {
-            // console.log(news.category_name);
             const li = document.createElement('li');
             li.innerHTML = `
-        <a onclick="someNews('${news.category_id}')" class="px-8 text-lg">${news.category_name}</a>
+        <a onclick="someNews('${news.category_id}')" class="px-8 text-lg cursor-pointer">${news.category_name}</a>
         `
             catagoryMenu.appendChild(li);
         }
@@ -28,7 +24,6 @@ const catagoriMenu = async () => {
     catch (e) {
         console.log('catagory names not found');
     }
-    // console.log(data.data.news_category)
 }
 
 const someNews = (category_id) => {
@@ -40,13 +35,9 @@ const someNews = (category_id) => {
     fetch(url)
         .then(res => res.json())
         .then(data => diaplayNews(data.data))
-
 }
 
 const diaplayNews = (newsCard) => {
-
-    // const newsDisplay = await newsCard
-    console.log(newsCard);
     const showNews = document.getElementById('show-news')
     const notFound = document.getElementById('not-found')
     showNews.textContent = '';
@@ -56,7 +47,6 @@ const diaplayNews = (newsCard) => {
     spinner.classList.add('hidden')
 
     if (newsCard.length === 0) {
-        // console.log('Not Found');
         notFound.innerHTML = `
         <h2 class="text-4xl text-teal-500 text-center">Not Found Any News</h2>
         `
@@ -73,8 +63,6 @@ const diaplayNews = (newsCard) => {
         `
 
     sort.forEach(cardNews => {
-        // console.log(cardNews);
-
         const newsDiv = document.createElement('div')
         newsDiv.innerHTML = `
         <figure class="p-5">
@@ -92,15 +80,10 @@ const diaplayNews = (newsCard) => {
         </div>
         `
         showNews.appendChild(newsDiv)
-
-
     })
-
-
 }
 
 const modalView = news_id => {
-    // console.log(newNews);
     const url = `https://openapi.programming-hero.com/api/news/${news_id}`
     fetch(url)
         .then(res => res.json())
@@ -108,9 +91,7 @@ const modalView = news_id => {
 }
 
 const topNews = hotNews => {
-    console.log(hotNews);
     const modalNews = document.getElementById('modal-news')
-    // modalNews.classList.add('modal')
     modalNews.innerHTML = `
     <div class="modal-box relative">
         <label for="my-modal-3" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
